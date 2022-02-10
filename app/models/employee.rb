@@ -1,3 +1,3 @@
 class Employee < ApplicationRecord
-  belongs :enterprise
+  belongs_to :enterprise
 end
