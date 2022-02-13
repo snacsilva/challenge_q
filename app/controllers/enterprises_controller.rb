@@ -1,5 +1,5 @@
 class EnterprisesController < ApplicationController
-  before_action :set_enterprise, only: %i[ show update destroy ]
+  before_action :set_enterprise, only: %i[ show update destroy all_employees ]
 
   # GET /enterprises
   def index
@@ -36,6 +36,10 @@ class EnterprisesController < ApplicationController
   # DELETE /enterprises/1
   def destroy
     @enterprise.destroy
+  end
+
+  def all_employees
+    @enterprise.employees
   end
 
   private

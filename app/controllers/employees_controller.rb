@@ -18,7 +18,7 @@ class EmployeesController < ApplicationController
     @employee = Employee.new(employee_params)
 
     if @employee.save
-      render json: @employee, status: :created, location: @employee
+      render json: @employee, status: :created
     else
       render json: @employee.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class EmployeesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def employee_params
-      params.require(:employee).permit(:name, :email, :leader, :enterprise_id)
+      params.require(:employee).permit(:name, :email, :enterprise_id)
     end
 end

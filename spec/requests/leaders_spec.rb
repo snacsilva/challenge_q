@@ -12,9 +12,9 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/employees", type: :request do
+RSpec.describe "/leaders", type: :request do
   # This should return the minimal set of attributes required to create a valid
-  # Employee. As you add validations to Employee, be sure to
+  # Leader. As you add validations to Leader, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -26,7 +26,7 @@ RSpec.describe "/employees", type: :request do
 
   # This should return the minimal set of values that should be in the headers
   # in order to pass any filters (e.g. authentication) defined in
-  # EmployeesController, or in your router and rack
+  # LeadersController, or in your router and rack
   # middleware. Be sure to keep this updated too.
   let(:valid_headers) {
     {}
@@ -34,48 +34,48 @@ RSpec.describe "/employees", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Employee.create! valid_attributes
-      get employees_url, headers: valid_headers, as: :json
+      Leader.create! valid_attributes
+      get leaders_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      employee = Employee.create! valid_attributes
-      get enterprise_employees_url(employee), as: :json
+      leader = Leader.create! valid_attributes
+      get leader_url(leader), as: :json
       expect(response).to be_successful
     end
   end
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Employee" do
+      it "creates a new Leader" do
         expect {
-          post employees_url,
-               params: { employee: valid_attributes }, headers: valid_headers, as: :json
-        }.to change(Employee, :count).by(1)
+          post leaders_url,
+               params: { leader: valid_attributes }, headers: valid_headers, as: :json
+        }.to change(Leader, :count).by(1)
       end
 
-      it "renders a JSON response with the new employee" do
-        post employees_url,
-             params: { employee: valid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with the new leader" do
+        post leaders_url,
+             params: { leader: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
 
     context "with invalid parameters" do
-      it "does not create a new Employee" do
+      it "does not create a new Leader" do
         expect {
-          post employees_url,
-               params: { employee: invalid_attributes }, as: :json
-        }.to change(Employee, :count).by(0)
+          post leaders_url,
+               params: { leader: invalid_attributes }, as: :json
+        }.to change(Leader, :count).by(0)
       end
 
-      it "renders a JSON response with errors for the new employee" do
-        post employees_url,
-             params: { employee: invalid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with errors for the new leader" do
+        post leaders_url,
+             params: { leader: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
@@ -88,28 +88,28 @@ RSpec.describe "/employees", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested employee" do
-        employee = Employee.create! valid_attributes
-        patch enterprise_employees_url(employee),
-              params: { employee: new_attributes }, headers: valid_headers, as: :json
-        employee.reload
+      it "updates the requested leader" do
+        leader = Leader.create! valid_attributes
+        patch leader_url(leader),
+              params: { leader: new_attributes }, headers: valid_headers, as: :json
+        leader.reload
         skip("Add assertions for updated state")
       end
 
-      it "renders a JSON response with the employee" do
-        employee = Employee.create! valid_attributes
-        patch enterprise_employees_url(employee),
-              params: { employee: new_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with the leader" do
+        leader = Leader.create! valid_attributes
+        patch leader_url(leader),
+              params: { leader: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
 
     context "with invalid parameters" do
-      it "renders a JSON response with errors for the employee" do
-        employee = Employee.create! valid_attributes
-        patch enterprise_employees_url(employee),
-              params: { employee: invalid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with errors for the leader" do
+        leader = Leader.create! valid_attributes
+        patch leader_url(leader),
+              params: { leader: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
@@ -117,11 +117,11 @@ RSpec.describe "/employees", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested employee" do
-      employee = Employee.create! valid_attributes
+    it "destroys the requested leader" do
+      leader = Leader.create! valid_attributes
       expect {
-        delete enterprise_employees_url(employee), headers: valid_headers, as: :json
-      }.to change(Employee, :count).by(-1)
+        delete leader_url(leader), headers: valid_headers, as: :json
+      }.to change(Leader, :count).by(-1)
     end
   end
 end
