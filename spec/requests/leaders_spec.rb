@@ -17,11 +17,24 @@ RSpec.describe "/leaders", type: :request do
   # Leader. As you add validations to Leader, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      employee_id: employee_1.id,
+      led_id: employee_2.id
+    }
   }
 
+  let(:employee_1) { create(:employee,
+    enterprise_id: enterprise.id) }
+
+  let(:employee_2) { create(:employee,
+    enterprise_id: enterprise.id) }
+
+  let(:enterprise) { create(:enterprise) }
+
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      name: 'Crazy eyes'
+    } 
   }
 
   # This should return the minimal set of values that should be in the headers
@@ -34,16 +47,16 @@ RSpec.describe "/leaders", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Leader.create! valid_attributes
-      get leaders_url, headers: valid_headers, as: :json
+      Leader.create valid_attributes
+      get enterprise_leaders_path(enterprise.id), headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      leader = Leader.create! valid_attributes
-      get leader_url(leader), as: :json
+      leader = Leader.create valid_attributes
+      get enterprise_leaders_url(leader), as: :json
       expect(response).to be_successful
     end
   end
@@ -52,13 +65,13 @@ RSpec.describe "/leaders", type: :request do
     context "with valid parameters" do
       it "creates a new Leader" do
         expect {
-          post leaders_url,
+          post enterprise_leaders_path(enterprise.id),
                params: { leader: valid_attributes }, headers: valid_headers, as: :json
         }.to change(Leader, :count).by(1)
       end
 
       it "renders a JSON response with the new leader" do
-        post leaders_url,
+        post enterprise_leaders_path(enterprise.id),
              params: { leader: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -68,13 +81,13 @@ RSpec.describe "/leaders", type: :request do
     context "with invalid parameters" do
       it "does not create a new Leader" do
         expect {
-          post leaders_url,
+          post enterprise_leaders_path(enterprise.id),
                params: { leader: invalid_attributes }, as: :json
         }.to change(Leader, :count).by(0)
       end
 
       it "renders a JSON response with errors for the new leader" do
-        post leaders_url,
+        post enterprise_leaders_path(enterprise.id),
              params: { leader: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -85,20 +98,23 @@ RSpec.describe "/leaders", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {
+          employee_id: employee_1.id,
+          led_id: employee_2.id
+        }
       }
 
       it "updates the requested leader" do
-        leader = Leader.create! valid_attributes
-        patch leader_url(leader),
+        leader = Leader.create valid_attributes
+        patch enterprise_leader_path(enterprise.id, leader),
               params: { leader: new_attributes }, headers: valid_headers, as: :json
         leader.reload
         skip("Add assertions for updated state")
       end
 
       it "renders a JSON response with the leader" do
-        leader = Leader.create! valid_attributes
-        patch leader_url(leader),
+        leader = Leader.create valid_attributes
+        patch enterprise_leader_path(enterprise.id, leader),
               params: { leader: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -107,10 +123,9 @@ RSpec.describe "/leaders", type: :request do
 
     context "with invalid parameters" do
       it "renders a JSON response with errors for the leader" do
-        leader = Leader.create! valid_attributes
-        patch leader_url(leader),
+        leader = Leader.create valid_attributes
+        patch enterprise_leader_path(enterprise.id, leader),
               params: { leader: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
@@ -118,9 +133,9 @@ RSpec.describe "/leaders", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the requested leader" do
-      leader = Leader.create! valid_attributes
+      leader = Leader.create valid_attributes
       expect {
-        delete leader_url(leader), headers: valid_headers, as: :json
+        delete enterprise_leader_path(enterprise.id, leader), headers: valid_headers, as: :json
       }.to change(Leader, :count).by(-1)
     end
   end

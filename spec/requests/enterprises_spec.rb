@@ -17,11 +17,15 @@ RSpec.describe "/enterprises", type: :request do
   # Enterprise. As you add validations to Enterprise, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      name: Faker::TvShows::Buffy.character
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      cake_is_real: false
+    }
   }
 
   # This should return the minimal set of values that should be in the headers
@@ -76,7 +80,6 @@ RSpec.describe "/enterprises", type: :request do
       it "renders a JSON response with errors for the new enterprise" do
         post enterprises_url,
              params: { enterprise: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
@@ -85,11 +88,12 @@ RSpec.describe "/enterprises", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {
+          name: Faker::TvShows::Friends.character        }
       }
 
       it "updates the requested enterprise" do
-        enterprise = Enterprise.create! valid_attributes
+        enterprise = Enterprise.create valid_attributes
         patch enterprise_url(enterprise),
               params: { enterprise: new_attributes }, headers: valid_headers, as: :json
         enterprise.reload
@@ -97,7 +101,7 @@ RSpec.describe "/enterprises", type: :request do
       end
 
       it "renders a JSON response with the enterprise" do
-        enterprise = Enterprise.create! valid_attributes
+        enterprise = Enterprise.create valid_attributes
         patch enterprise_url(enterprise),
               params: { enterprise: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
@@ -107,10 +111,9 @@ RSpec.describe "/enterprises", type: :request do
 
     context "with invalid parameters" do
       it "renders a JSON response with errors for the enterprise" do
-        enterprise = Enterprise.create! valid_attributes
+        enterprise = Enterprise.create valid_attributes
         patch enterprise_url(enterprise),
               params: { enterprise: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
@@ -118,7 +121,7 @@ RSpec.describe "/enterprises", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the requested enterprise" do
-      enterprise = Enterprise.create! valid_attributes
+      enterprise = Enterprise.create valid_attributes
       expect {
         delete enterprise_url(enterprise), headers: valid_headers, as: :json
       }.to change(Enterprise, :count).by(-1)
