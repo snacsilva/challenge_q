@@ -1,24 +1,30 @@
-# README
+# Virtue Rocks
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Here is an api project where you can create companies and their employees and relate employees to their leadership.
 
-Things you may want to cover:
+## Build with
+* Architecture: MVC, as a convention in RoR, and Rest API, for client-server communication with the app.
+* Test: RSpec
+* Database: Postgresql.
+* Frameworks: Ruby on Rails 6
 
-* Ruby version
+## For run it 
 
-* System dependencies
+```
+bundle
+yarn install
+rails db:setup
+rails s
+```
 
-* Configuration
+## Tests
 
-* Database creation
+```
+rspec
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## API
+The application use four endpoints:
+- `/enterprise`
+- `enterprises/:enterprise_id/employees`
+- `enterprises/:enterprise_id//managers`
